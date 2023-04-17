@@ -1,9 +1,6 @@
 const { Telegraf } = require("telegraf");
 const { createReadStream } = require("fs");
 const { torrentData } = require("./api.js");
-// Configure torrent search API
-// torrentSearch.enableProvider("ThePirateBay");
-// torrentSearch.enableProvider("1337x");
 
 // Create a new Telegraf bot with your API token
 const bot = new Telegraf(process.env.Telegram_Token);
@@ -17,7 +14,11 @@ bot.start((ctx) => {
 
 // Torrent search command
 bot.command("search", async (ctx) => {
+
+  //prints user input in console
   console.log("Message received - ", ctx.message.text.slice(8));
+
+  //extract search term
   const searchTerm = ctx.message.text.slice(8);
 
   // Search for torrents using the search term
@@ -26,6 +27,7 @@ bot.command("search", async (ctx) => {
   if (torrents.length === 0) {
     ctx.reply("No torrents found for the search term.");
   } else {
+
     // Send a list of the first 10 torrents found
     const torrentList = torrents
       .slice(0, 3)
@@ -36,10 +38,12 @@ bot.command("search", async (ctx) => {
       })
       .join("\n");
 
-    ctx.replyWithMarkdown(
-      `Here are the top ${
+    //reply to user
+    ctx.reply(
+      `<strong>Here are the top ${
         torrents.length > 10 ? 10 : torrents.length
-      } torrents I found for "${searchTerm}":\n\n${torrentList}`
+      } torrents I found for "${searchTerm}":\n\n${torrentList}</strong>`,
+      { parse_mode: "HTML" }
     );
   }
 });
