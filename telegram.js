@@ -14,7 +14,6 @@ bot.start((ctx) => {
 
 // Torrent search command
 bot.command("search", async (ctx) => {
-
   //prints user input in console
   console.log("Message received - ", ctx.message.text.slice(8));
 
@@ -27,14 +26,13 @@ bot.command("search", async (ctx) => {
   if (torrents.length === 0) {
     ctx.reply("No torrents found for the search term.");
   } else {
-
     // Send a list of the first 10 torrents found
     const torrentList = torrents
       .slice(0, 3)
       .map((torrent, index) => {
         return `🚀${index + 1}. \n🚀${torrent.title} \n🚀 Size - ${
           torrent.size
-        }  \n🚀Magent Link - ${torrent.magnet}`;
+        }  \n🚀Magent Link - ${JSON.stringify(torrent.magnet)}`;
       })
       .join("\n");
 
